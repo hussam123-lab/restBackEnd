@@ -4,7 +4,8 @@ app = Flask(__name__)
 
 # ls = {"HTTP" = [], "Me"}
 @app.route('/', methods = ["POST","GET"])
-@app.route('/main', methods = ["POST","GET"])
+
+@app.route('/main')
 def getMain():
     #ls.append(1)
     # {name:, data : {...}}
