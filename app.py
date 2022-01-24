@@ -12,9 +12,8 @@ def getMain():
 #     print(request.data, file=sys.stderr)
 #     status_code = flask.Response(data = request)
 #     return status_code
-    ls.append(1)
-    record = json.loads(request.data)
-    return str(record)
+    ls.append(json.loads(request.data))
+    return str(ls[0])
 #     return (str(len(ls)))
 
 @app.route('/about')
