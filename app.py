@@ -2,11 +2,12 @@ from flask import Flask, request,render_template
 app = Flask(__name__)
 
 
-
+ls = []
 @app.route('/', methods = ["POST","GET"])
 
 @app.route('/main')
 def getMain():
+    ls.append(1)
     return ('welcome to main')
 
 @app.route('/about')
