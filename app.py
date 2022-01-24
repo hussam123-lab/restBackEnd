@@ -9,16 +9,17 @@ ls = []
 
 @app.route('/main',methods = ["POST","GET"])
 def getMain():
+    x = None
 #     print(request.data, file=sys.stderr)
 #     status_code = flask.Response(data = request)
 #     return status_code
     if request.method == 'POST':
-        ls.append(request.data)
+        x = request.get_json()
+#         ls.append(request.data.)
+
     if len(ls) == 0:
-        return ('Hi')
-    stri = ''
-    for i in request.data:
-        stri += str(i["a_key"])
+        return (str(x["a_key"]))
+  
     return stri
 #     return (str(len(ls)))
 
