@@ -1,4 +1,6 @@
 from flask import Flask, request,render_template
+import sys
+
 app = Flask(__name__)
 
 
@@ -7,7 +9,9 @@ ls = []
 
 @app.route('/main',methods = ["POST","GET"])
 def getMain():
+    print(request.data, file=sys.stderr)
     ls.append(1)
+    
     return (str(len(ls)))
 
 @app.route('/about')
