@@ -15,12 +15,13 @@ def getMain():
 #     return status_code
     if request.method == 'POST':
         x = request.get_json()
+        return (str(x["a_key"]))
 #         ls.append(request.data.)
 
     if len(ls) == 0:
         return ('Hi')
   
-    return (str(x["a_key"]))
+   
 #     return (str(len(ls)))
 
 @app.route('/about')
