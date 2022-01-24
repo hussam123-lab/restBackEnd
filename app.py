@@ -1,32 +1,29 @@
 from flask import Flask, request,render_template
 import sys
-
+import json
 app = Flask(__name__)
 
 
 ls = []
+container_logs = {
+    "am-usage" : {},
+    "insights-logs-appservicehttplogs" : {},
+    "insights-metrics-pt1m": {}
+}
 @app.route('/', methods = ["POST","GET"])
 
 @app.route('/main',methods = ["POST","GET"])
 def getMain():
     x = None
-#     print(request.data, file=sys.stderr)
-#     status_code = flask.Response(data = request)
-#     return status_code
+
     if request.method == 'POST':
-        x = request.get_json()
-        ls.append(x)
-#         ls.append(request.data.)
+        x = request.data.decode("utf-8") # gets data then goes from bytes to string
+        x = json.loads(x)
+        container_logs[x["name"]] = x["data"]
+    
+    
 
-    if len(ls) == 0:
-        return ('Hi')
-    return (str(ls[0]["a_key"]))
-#     return (str(len(ls)))
+        
 
-@app.route('/about')
-def getAbout():
-    return ('welcome to about')
+    return ('Rest API')
 
-@app.route("/hello")
-def hello():
-    return "Hello, AIOps Team!"
