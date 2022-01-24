@@ -18,9 +18,9 @@ def getMain():
 #         ls.append(request.data.)
 
     if len(ls) == 0:
-        return (str(x["a_key"]))
+        return ('Hi')
   
-    return stri
+    return (str(x["a_key"]))
 #     return (str(len(ls)))
 
 @app.route('/about')
