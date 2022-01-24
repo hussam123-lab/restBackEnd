@@ -2,15 +2,12 @@ from flask import Flask, request,render_template
 app = Flask(__name__)
 
 
-# ls = {"HTTP" = [], "Me"}
+ls = []
 @app.route('/', methods = ["POST","GET"])
 
 @app.route('/main')
 def getMain():
-    #ls.append(1)
-    # {name:, data : {...}}
-    # ls[name]  = data
-    
+    ls.append(1)
     return (str(len(ls)))
 
 @app.route('/about')
