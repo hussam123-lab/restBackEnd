@@ -13,7 +13,8 @@ def getMain():
 #     status_code = flask.Response(data = request)
 #     return status_code
     ls.append(1)
-    return str(len(request))
+    record = json.loads(request.data)
+    return str(record)
 #     return (str(len(ls)))
 
 @app.route('/about')
