@@ -13,7 +13,7 @@ def getMain():
 #     status_code = flask.Response(data = request)
 #     return status_code
     if request.method == 'POST':
-        ls.append(request.data)
+        ls.append(request.data["a_key"])
     if len(ls) == 0:
         return ('Hi')
     
