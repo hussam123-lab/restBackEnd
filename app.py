@@ -17,7 +17,7 @@ def getMain():
     if len(ls) == 0:
         return ('Hi')
     
-    return str(len(ls[0]))
+    return str(len(ls))
 #     return (str(len(ls)))
 
 @app.route('/about')
