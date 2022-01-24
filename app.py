@@ -13,11 +13,11 @@ def getMain():
 #     status_code = flask.Response(data = request)
 #     return status_code
     if request.method == 'POST':
-        ls.append(request.data["a_key"])
+        ls.append(request.data)
     if len(ls) == 0:
         return ('Hi')
     
-    return str(ls[0])
+    return str(type(ls[0]))
 #     return (str(len(ls)))
 
 @app.route('/about')
