@@ -8,7 +8,7 @@ ls = []
 @app.route('/main')
 def getMain():
     ls.append(1)
-    return ('welcome to main')
+    return (ls)
 
 @app.route('/about')
 def getAbout():
