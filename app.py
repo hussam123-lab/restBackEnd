@@ -12,6 +12,11 @@ container_logs = {
     "insights-metrics-pt1m": {}
 }
 
+
+"""
+Opsgenie handles alerts and routes them to the right team. Managed through web interface. 
+Config the api_key for your team. 
+"""
 class opsgenieConfig:
     def __init__(self, opsgenie_api_key):
         self.conf = self.conf = opsgenie_sdk.configuration.Configuration()
@@ -20,11 +25,11 @@ class opsgenieConfig:
         self.api_client = opsgenie_sdk.api_client.ApiClient(configuration=self.conf)
         self.alert_api = opsgenie_sdk.AlertApi(api_client=self.api_client)
 
-    def create(self):
+    def create(self, description, meteric, value):
         body = opsgenie_sdk.CreateAlertPayload(
-        message='Sample',
-        alias='python_sample',
-        description='Sample of SDK v2',
+        message= 'Anomaly Detected in Web App {}:{}'.format(meteric,value),
+        alias='python_sample', #nneds to be unique unless you are overwriting
+        description= description,
         responders=[{
             'name': 'SampleTeam',
             'type': 'team'
@@ -56,8 +61,14 @@ def getMain():
         x = request.data.decode("utf-8") # gets data then goes from bytes to string
         x = json.loads(x)
         container_logs[x["name"]] = x["data"]
+
+
+        #if logs say there is an anommaly 
+        #createAert()
         
     return ('Rest API')
 
-if __name__ == "__main__" :
-     print('retard code')
+def createAlert():
+    the_genie = opsgenieConfig(opsgenie_api_key)
+    description = 'sample description'
+    the_genie.create(description, 'meteric', 'value')
