@@ -14,8 +14,8 @@ container_logs = {
 
 
 """
-Opsgenie handles alerts and routes them to the right team. Managed through web interface. 
-Config the api_key for your team. 
+Opsgenie handles alerts and routes them to the right team. Routing and alerts are configured through the webapp.
+Config the api_key for your team, here. This api can create, delete, and change alerts. Only create function is defined here.  
 """
 class opsgenieConfig:
     def __init__(self, opsgenie_api_key):
@@ -61,14 +61,23 @@ def getMain():
         x = request.data.decode("utf-8") # gets data then goes from bytes to string
         x = json.loads(x)
         container_logs[x["name"]] = x["data"]
+        anomalies_csbytes = x["insights-logs-appservicehttplogs"][0]["anomalies"]["anomalies"] #Csbytes
+        anomalies_Scbytes = x["insights-logs-appservicehttplogs"][1]["anomalies"]["anomalies"] #ScStatus
+        anomalies_timeTaken = x["insights-logs-appservicehttplogs"][2]["anomalies"]["anomalies"] #TimeTaken
 
 
-        #if logs say there is an anommaly 
-        #createAert()
+        if anomalies_csbytes:
+            createAlert("insights-logs-appservicehttplogs", "CsBytes", -1)
+        
+        if anomalies_Scbytes:
+            createAlert("insights-logs-appservicehttplogs", "ScBytes", -1)
+
+        if anomalies_timeTaken:
+            createAlert("insights-logs-appservicehttplogs", "Time Taken", -1)
+
         
     return ('Rest API')
 
-def createAlert():
+def createAlert(description, meteric, value):
     the_genie = opsgenieConfig(opsgenie_api_key)
-    description = 'sample description'
-    the_genie.create(description, 'meteric', 'value')
+    the_genie.create(description, meteric, value)
