@@ -1,0 +1,98 @@
+{
+    "am-usage":{
+    },
+    "insights-logs-appservicehttplogs":[
+     {
+       "metricName":"CsBytes",
+       "anomalies":{
+        "anomalies":[
+          1566.0
+        ],
+        "anomaly_labels":[
+          "26/01/2022 12:30:11"
+        ],
+        "anomaly_indexes":[
+          0
+        ]
+       }
+     },
+     {
+       "metricName":"ScStatus",
+       "anomalies":{
+        "anomalies":[
+        ],
+        "anomaly_labels":[
+        ],
+        "anomaly_indexes":[
+        ]
+       }
+     },
+     {
+       "metricName":"TimeTaken",
+       "anomalies":{
+        "anomalies":[
+          67.0,
+          10.0,
+          3.0,
+          3.0,
+          3.0,
+          1.0,
+          1.0
+        ],
+        "anomaly_labels":[
+          "26/01/2022 12:30:11",
+          "26/01/2022 12:30:12",
+          "26/01/2022 12:30:14",
+          "26/01/2022 12:30:19",
+          "26/01/2022 12:30:22",
+          "26/01/2022 12:30:26",
+          "26/01/2022 12:30:35"
+        ],
+        "anomaly_indexes":[
+          0,
+          1,
+          2,
+          6,
+          9,
+          12,
+          19
+        ]
+       }
+     }
+    ],
+    "insights-metrics-pt1m":[
+     {
+       "metricName":"CpuTime",
+       "anomalies":{
+        "anomalies":[
+        ],
+        "anomaly_labels":[
+        ],
+        "anomaly_indexes":[
+        ]
+       }
+     },
+     {
+       "metricName":"BytesSent",
+       "anomalies":{
+        "anomalies":[
+        ],
+        "anomaly_labels":[
+        ],
+        "anomaly_indexes":[
+        ]
+       }
+     },
+     {
+       "metricName":"HttpResponseTime",
+       "anomalies":{
+        "anomalies":[
+        ],
+        "anomaly_labels":[
+        ],
+        "anomaly_indexes":[
+        ]
+       }
+     }
+    ]
+  }
