@@ -122,7 +122,7 @@ class opsgenieConfig:
         priority=priority_code)
         try:
             create_response = self.alert_api.create_alert(create_alert_payload=body)
-            print(create_response)
+            print(body)
             return create_response
         except opsgenie_sdk.ApiException as err:
             print("Exception when calling AlertApi->create_alert: %s\n" % err)
@@ -185,23 +185,26 @@ def getMain():
  
 
             anomalies_timeTaken = x["data"][2]["anomalies"]["anomalies"] #TimeTaken
-
-
+            headers = {"Authorization" : "GenieKey 8fedb235-e7c0-4e2a-907f-05ef3dff1d01"}
             if len(anomalies_csbytes) > 0 :
+
                 data = createAlert("insights-logs-appservicehttplogs", "CsBytes", anomalies_csbytes[-1],"P2")
-                # url = "	https://api.opsgenie.com/v2/alerts" #http://192.168.68.107:5000/  https://aiopsendpoint.azurewebsites.net/
-                # response = requests.post(url, data)
-        
+                # url = "	https://api.eu.opsgenie.com/v2/alerts" #http://192.168.68.107:5000/  https://aiopsendpoint.azurewebsites.net/
+                # response = requests.post(url, data,headers)
+                # print(response) 
+        # https://api.eu.opsgenie.com/v2/alerts
             if len(anomalies_Scbytes) > 0:
                 data = createAlert("insights-logs-appservicehttplogs", "ScBytes", anomalies_Scbytes[-1],"P2")
-                # url = "	https://api.opsgenie.com/v2/alerts" #http://192.168.68.107:5000/  https://aiopsendpoint.azurewebsites.net/
-                # response = requests.post(url, data)
+                # url = "	https://api.eu.opsgenie.com/v2/alerts" #http://192.168.68.107:5000/  https://aiopsendpoint.azurewebsites.net/
+                # response = requests.post(url, data,headers)
+                # print(response)
                 
 
             if len(anomalies_timeTaken)>0:
                 data = createAlert("insights-logs-appservicehttplogs", "Time Taken", anomalies_timeTaken[-1],"P2")
-                # url = "	https://api.opsgenie.com/v2/alerts" #http://192.168.68.107:5000/  https://aiopsendpoint.azurewebsites.net/
-                # response = requests.post(url, data)
+                # url = "	https://api.eu.opsgenie.com/v2/alerts" #http://192.168.68.107:5000/  https://aiopsendpoint.azurewebsites.net/
+                # response = requests.post(url, data,headers)
+                # print(response)
                 
         if x["name"] == "insights-metrics-pt1m":
             anomalies_CpuTime = x["data"][0]["anomalies"]["anomalies"] # CpuTime
@@ -275,6 +278,7 @@ def createAlert(description, meteric, value, priority):
     the_genie = opsgenieConfig(opsgenie_api_key)
     the_genie.create(description, meteric, value, priority)
     
+
 
 
 
