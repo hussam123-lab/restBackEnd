@@ -5,8 +5,9 @@ import opsgenie_sdk
 app = Flask(__name__)
 opsgenie_api_key = '8fedb235-e7c0-4e2a-907f-05ef3dff1d01' #or your teams opsgenie key
 
+import requests
 
-count = 0
+
 
 
 ls = []
@@ -91,6 +92,40 @@ container_logs = {
     ]
   }
 
+"""
+Opsgenie handles alerts and routes them to the right team. Routing and alerts are configured through the webapp.
+Config the api_key for your team, here. This api can create, delete, and change alerts. Only create function is defined here.
+"""
+class opsgenieConfig:
+    def __init__(self, opsgenie_api_key):
+        self.conf = self.conf = opsgenie_sdk.configuration.Configuration()
+        self.conf.api_key['Authorization'] = opsgenie_api_key
+        self.api_client = opsgenie_sdk.api_client.ApiClient(configuration=self.conf)
+        self.alert_api = opsgenie_sdk.AlertApi(api_client=self.api_client)
+    def create(self, description, meteric, value, priority_code):
+        body = opsgenie_sdk.CreateAlertPayload(
+        message= 'Anomaly Detected in Web App {}:{}'.format(meteric,value),
+        alias='python_sample', #nneds to be unique unless you are overwriting
+        description= description,
+        responders=[{
+            'name': 'SampleTeam',
+            'type': 'team'
+        }],
+        visible_to=[
+        {'name': 'Sample',
+        'type': 'team'}],
+        actions=['Restart', 'AnExampleAction'],
+        tags=['OverwriteQuietHours'],
+        details={'key1': 'value1',
+                'key2': 'value2'},
+        entity='An example entity',
+        priority=priority_code)
+        try:
+            create_response = self.alert_api.create_alert(create_alert_payload=body)
+            print(create_response)
+            return create_response
+        except opsgenie_sdk.ApiException as err:
+            print("Exception when calling AlertApi->create_alert: %s\n" % err)
 # {
 #     "am-usage" : {},
 #     "insights-logs-appservicehttplogs" : {},
@@ -115,43 +150,7 @@ container_logs = {
 # print(count_of_accesses)
 
 
-"""
-Opsgenie handles alerts and routes them to the right team. Routing and alerts are configured through the webapp.
-Config the api_key for your team, here. This api can create, delete, and change alerts. Only create function is defined here.  
-"""
-class opsgenieConfig:
-    def __init__(self, opsgenie_api_key):
-        self.conf = self.conf = opsgenie_sdk.configuration.Configuration()
-        self.conf.api_key['Authorization'] = opsgenie_api_key 
 
-        self.api_client = opsgenie_sdk.api_client.ApiClient(configuration=self.conf)
-        self.alert_api = opsgenie_sdk.AlertApi(api_client=self.api_client)
-
-    def create(self, description, meteric, value):
-        body = opsgenie_sdk.CreateAlertPayload(
-        message= 'Anomaly Detected in Web App {}:{}'.format(meteric,value),
-        alias='python_sample', #nneds to be unique unless you are overwriting
-        description= description,
-        responders=[{
-            'name': 'SampleTeam',
-            'type': 'team'
-        }],
-        visible_to=[
-        {'name': 'Sample',
-        'type': 'team'}],
-        actions=['Restart', 'AnExampleAction'],
-        tags=['OverwriteQuietHours'],
-        details={'key1': 'value1',
-                'key2': 'value2'},
-        entity='An example entity',
-        priority='P3')
-        
-        try:
-            create_response = self.alert_api.create_alert(create_alert_payload=body)
-            print(create_response)
-            return create_response
-        except opsgenie_sdk.ApiException as err:
-            print("Exception when calling AlertApi->create_alert: %s\n" % err)
 
 
 checked = False
@@ -189,15 +188,20 @@ def getMain():
 
 
             if len(anomalies_csbytes) > 0 :
-                createAlert("insights-logs-appservicehttplogs", "CsBytes", -1)
-                
+                data = createAlert("insights-logs-appservicehttplogs", "CsBytes", anomalies_csbytes[-1],"P2")
+                # url = "	https://api.opsgenie.com/v2/alerts" #http://192.168.68.107:5000/  https://aiopsendpoint.azurewebsites.net/
+                # response = requests.post(url, data)
         
             if len(anomalies_Scbytes) > 0:
-                createAlert("insights-logs-appservicehttplogs", "ScBytes", -1)
+                data = createAlert("insights-logs-appservicehttplogs", "ScBytes", anomalies_Scbytes[-1],"P2")
+                # url = "	https://api.opsgenie.com/v2/alerts" #http://192.168.68.107:5000/  https://aiopsendpoint.azurewebsites.net/
+                # response = requests.post(url, data)
                 
 
             if len(anomalies_timeTaken)>0:
-                createAlert("insights-logs-appservicehttplogs", "Time Taken", -1)
+                data = createAlert("insights-logs-appservicehttplogs", "Time Taken", anomalies_timeTaken[-1],"P2")
+                # url = "	https://api.opsgenie.com/v2/alerts" #http://192.168.68.107:5000/  https://aiopsendpoint.azurewebsites.net/
+                # response = requests.post(url, data)
                 
         if x["name"] == "insights-metrics-pt1m":
             anomalies_CpuTime = x["data"][0]["anomalies"]["anomalies"] # CpuTime
@@ -207,15 +211,15 @@ def getMain():
             anomalies_HttpResponseTime = x["data"][2]["anomalies"]["anomalies"] # HTTP Response Time
 
             if len(anomalies_CpuTime) > 0 :
-                createAlert("insights-metrics-pt1m", "CpuTime", -1)
+                createAlert("insights-metrics-pt1m", "CpuTime", anomalies_CpuTime[-1],"P2")
                 
         
             if len(anomalies_BytesSent) > 0:
-                createAlert("insights-metrics-pt1m", "BytesSent", -1)
+                createAlert("insights-metrics-pt1m", "BytesSent", anomalies_BytesSent[-1],"P2")
                 
 
             if len(anomalies_HttpResponseTime)>0:
-                createAlert("insights-metrics-pt1m", "HttpResponseTime", -1)
+                createAlert("insights-metrics-pt1m", "HttpResponseTime", anomalies_HttpResponseTime[-1],"P2")
                 
         # for i in range(0,len(container_logs["insights-logs-appservicehttplogs"])):
         #     curr_len = len(container_logs["insights-logs-appservicehttplogs"][i]["anomalies"]["anomalies"])
@@ -267,10 +271,13 @@ def getMain():
         
     return ('Rest API')
 
-def createAlert(description, meteric, value):
+def createAlert(description, meteric, value, priority):
     the_genie = opsgenieConfig(opsgenie_api_key)
-    the_genie.create(description, meteric, value)
+    the_genie.create(description, meteric, value, priority)
+    
 
+
+app.run(host = "0.0.0.0",port = 5000)
 
 
 
