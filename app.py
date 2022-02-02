@@ -278,7 +278,8 @@ def createAlert(description, meteric, value, priority):
     the_genie = opsgenieConfig(opsgenie_api_key)
     the_genie.create(description, meteric, value, priority)
 
-app.run()
+if __name__ == "__main__":
+    app.run(debug=True)
 
 
 
