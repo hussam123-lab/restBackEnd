@@ -278,7 +278,7 @@ def createAlert(description, meteric, value, priority):
     the_genie = opsgenieConfig(opsgenie_api_key)
     the_genie.create(description, meteric, value, priority)
 
-app.run(host = "0.0.0.0",port = 5000)
+app.run()
 
 
 
